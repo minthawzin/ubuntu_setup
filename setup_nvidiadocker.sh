@@ -11,7 +11,6 @@ sudo docker --version
 sudo systemctl status docker
 sudo usermod -aG docker $USER
 
-
 #NVIDIA-DOCKER
 sudo curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
   && sudo curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
@@ -19,13 +18,10 @@ sudo curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg -
     sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 
 sudo systemctl restart docker
-export NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.8-1
-sudo dnf install -y \
-    nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
-    nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
-    libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
-    libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}
-
+sudo apt-get update
+sudo apt-get install -y nvidia-docker2
 sudo nvidia-ctk runtime configure --runtime=docker
+
 sudo systemctl restart docker
+sudo systemctl start docker
 sudo docker run --rm --runtime=nvidia nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
